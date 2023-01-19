@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/marvin-zhao/nodebb-plugin-dbsearch-jieba"
+    "url": "https://github.com/ww9rivers/nodebb-plugin-dbsearch-jieba"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,18 +15,19 @@
     "plugin",
     "search"
   ],
-  "author": "Marvin Zhao <zyxfsky@gmail.com>",
+  "author": "Wei Wang <ww@9rivers.com>",
   "license": "BSD-2-Clause",
   "dependencies": {
     "lodash": "4.17.21",
-    "redisearch": "^1.0.0"
-    "winston": "2.3.1",
-    "nodejieba": "^2.3.2"
+    "nodejieba": "^2.3.2",
+    "nstall": "^0.2.0",
+    "redisearch": "^1.0.0",
+    "winston": "^3.8.2"
   },
   "devDependencies": {
-    "eslint": "7.32.0",
-    "eslint-config-nodebb": "0.0.3",
-    "eslint-plugin-import": "2.25.2"
+    "eslint": "^8.32.0",
+    "eslint-config-nodebb": "^0.2.1",
+    "eslint-plugin-import": "^2.27.5"
   },
   "nbbpm": {
     "compatibility": "^3.0.0"
