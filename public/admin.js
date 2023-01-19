@@ -1,8 +1,8 @@
 'use strict';
 
-/* globals $, window, app, define, socket, config, ajaxify, bootbox */
-
-define('admin/plugins/dbsearch', [], function () {
+define('admin/plugins/dbsearch', [
+	'alerts', 'admin/settings',
+], function (alerts, settings) {
 	var dbsearch = {};
 	var intervalId = 0;
 
@@ -17,13 +17,13 @@ define('admin/plugins/dbsearch', [], function () {
 	dbsearch.init = function () {
 		$('#save').on('click', function () {
 			$.post(config.relative_path + '/api/admin/plugins/dbsearch/save', {
-				_csrf: $('#csrf_token').val(),
+				_csrf: config.csrf_token,
 				topicLimit: $('#topicLimit').val(),
 				postLimit: $('#postLimit').val(),
 				excludeCategories: $('#exclude-categories').val(),
 			}, function (data) {
 				if (typeof data === 'string') {
-					app.alertSuccess('Settings saved');
+					settings.toggleSaveSuccess($('#save'));
 				}
 			});
 
@@ -37,10 +37,10 @@ define('admin/plugins/dbsearch', [], function () {
 				}
 				socket.emit('admin.plugins.dbsearch.reindex', function (err) {
 					if (err) {
-						app.alertError(err.message);
+						alerts.error(err);
 						return clearProgress();
 					}
-					app.alertSuccess('Started indexing content! This might take a while. You can check the progress on this page.');
+					alerts.success('Started indexing content! This might take a while. You can check the progress on this page.');
 					startProgress();
 				});
 			});
@@ -55,10 +55,10 @@ define('admin/plugins/dbsearch', [], function () {
 				}
 				socket.emit('admin.plugins.dbsearch.clearIndex', function (err) {
 					if (err) {
-						app.alertError(err.message);
+						alerts.error(err);
 						return clearProgress();
 					}
-					app.alertSuccess('Started clearing index! This might take a while. You can check the progress on this page.');
+					alerts.success('Started clearing index! This might take a while. You can check the progress on this page.');
 					startProgress();
 				});
 			});
@@ -67,21 +67,19 @@ define('admin/plugins/dbsearch', [], function () {
 
 		$('#changeLanguage').on('click', function () {
 			var lang = $('#indexLanguage').val();
-			app.alertSuccess('Changing index language to "' + lang + '".');
+			alerts.success('Changing index language to "' + lang + '".');
 			socket.emit('admin.plugins.dbsearch.changeLanguage', lang, function (err) {
 				if (err) {
-					return app.alertError(err.message);
+					return alerts.error(err);
 				}
-				app.alertSuccess('Search index language changed!');
+				alerts.success('Search index language changed!');
 			});
 		});
 	};
 
 	function startProgress() {
 		clearProgress();
-		checkProgress();
-
-		intervalId = setInterval(checkProgress, 750);
+		intervalId = setInterval(checkProgress, 1000);
 	}
 
 	function clearProgress() {
@@ -95,7 +93,7 @@ define('admin/plugins/dbsearch', [], function () {
 		socket.emit('admin.plugins.dbsearch.checkProgress', function (err, progress) {
 			if (err) {
 				clearProgress();
-				return app.alertError(err.message);
+				return alerts.error(err);
 			}
 
 			var working = parseInt(progress.working, 10);
