@@ -15,11 +15,14 @@
     "plugin",
     "search"
   ],
-  "author": "Wei Wang <ww@9rivers.com>",
+  "author": "Marvin Zhao <zyxfsky@gmail.com>",
+  "maintainers": [
+    "Wei Wang <ww@9rivers.com>"
+  ],
   "license": "BSD-2-Clause",
   "dependencies": {
     "lodash": "4.17.21",
-    "nodejieba": "^2.3.2",
+    "nodejieba": "^2.6.0",
     "nstall": "^0.2.0",
     "redisearch": "^1.0.0",
     "winston": "^3.8.2"
